@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import get_object_or_404, render
 from .models import MainContent
 
 # Create your views here.
@@ -8,6 +8,6 @@ def index(request):
     return render(request, 'main/content_list.html', context)
 
 def detail(request, content_id):
-    content_list = MainContent.objects.get(id=content_id)
+    content_list = get_object_or_404(MainContent, pk=content_id)
     context = {'content_list':content_list}
     return render(request, 'main/content_detail.html', context)

@@ -20,12 +20,12 @@ def comment_create(request, content_id):
     content_list = get_object_or_404(MainContent, pk=content_id)
     if request.method == 'POST':
         form =CommentForm(request.POST)
-    if form.is_valid():
-        comment = form.save(commit=False)
-        comment.content_list = content_list
-        comment.author = request.user
-        comment.save()
-        return redirect('detail', content_id = content_list.id)
+        if form.is_valid():
+            comment = form.save(commit=False)
+            comment.content_list = content_list
+            comment.author = request.user
+            comment.save()
+            return redirect('detail', content_id = content_list.id)
     else:
         form = CommentForm()
     context = {'content_list':content_list, 'form':form}
@@ -44,10 +44,10 @@ def comment_update(request, comment_id):
             comment = form.save(commit=False)
             comment.save()
             return redirect('detail', content_id=comment.content_list.id)
-        else:
-            form = CommentForm(instance=comment)
-        context = {'comment':comment, 'form':form}
-        return render(request, 'mysite/comment_form.html', context)
+    else:
+        form = CommentForm(instance=comment)
+    context = {'comment':comment, 'form':form}
+    return render(request, 'mysite/comment_form.html', context)
     
 @login_required(login_url='accounts:login')
 def comment_delete(request, comment_id):
